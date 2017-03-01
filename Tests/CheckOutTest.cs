@@ -159,6 +159,23 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        //Tests db-fetching specific item
+        [Fact]
+        public void TestSearchDueDate_SearchSearchDueDateInDatabase()
+        {
+            //Arrange
+            DateTime dueDate = new DateTime(2017, 3, 15);
+            DateTime returnDate = new DateTime(2017, 3, 7);
+            CheckOut testCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            testCheckOut.Save();
+
+            //Act
+            List<CheckOut> allDue = CheckOut.SearchDueDate(dueDate);
+            List<CheckOut> testDue = new List<CheckOut> {testCheckOut};
+            //Assert
+            Assert.Equal(testDue, allDue);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {

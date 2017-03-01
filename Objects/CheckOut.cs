@@ -228,5 +228,46 @@ namespace LibraryApp.Objects
                 conn.Close();
             }
         }
+
+        //search for a book based on inputted title
+        public static List<CheckOut> SearchDueDate(DateTime dueDate)
+        {
+            List<CheckOut> allDue = new List<CheckOut>{};
+
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM checkouts WHERE due_date = @DueDate;", conn);
+            cmd.Parameters.Add(new SqlParameter("@DueDate", dueDate));
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            // int foundId = 0;
+            // string foundFirstName = null;
+            // string foundLastName = null;
+
+            while(rdr.Read())
+            {
+                int foundId = rdr.GetInt32(0);
+                DateTime foundDueDate = rdr.GetDateTime(1);
+                DateTime foundReturnDate = rdr.GetDateTime(2);
+                int foundPatronsId = rdr.GetInt32(3);
+                int foundCopiesId = rdr.GetInt32(4);
+
+                CheckOut foundCheckout = new CheckOut(foundDueDate, foundReturnDate, foundPatronsId, foundCopiesId, foundId);
+                allDue.Add(foundCheckout);
+            }
+
+            if(rdr != null)
+            {
+                rdr.Close();
+            }
+
+            if(conn != null)
+            {
+                conn.Close();
+            }
+
+            return allDue;
+        }
     }
 }
