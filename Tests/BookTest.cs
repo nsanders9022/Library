@@ -145,6 +145,21 @@ namespace LibraryApp.Objects
             Assert.Equal(verify, result);
         }
 
+        //Tests db-fetching specific item
+        [Fact]
+        public void TestSearchTitle_SearchTitlesBookInDatabase()
+        {
+            //Arrange
+            Book testBook = new Book("War and Peace");
+            testBook.Save();
+
+            //Act
+            Book foundBook = Book.SearchTitle("War and Peace");
+
+            //Assert
+            Assert.Equal(testBook, foundBook);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {

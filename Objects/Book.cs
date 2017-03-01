@@ -185,5 +185,39 @@ namespace LibraryApp.Objects
 
             conn.Close();
         }
+
+        //search for a book based on inputted title
+        public static Book SearchTitle(string title)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE title = @BookTitle;", conn);
+            cmd.Parameters.Add(new SqlParameter("@BookTitle", title));
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            int foundId = 0;
+            string foundTitle = null;
+
+            while(rdr.Read())
+            {
+                foundId = rdr.GetInt32(0);
+                foundTitle = rdr.GetString(1);
+            }
+
+            Book foundBook = new Book(foundTitle, foundId);
+
+            if(rdr != null)
+            {
+                rdr.Close();
+            }
+
+            if(conn != null)
+            {
+                conn.Close();
+            }
+
+            return foundBook;
+        }
     }
 }
