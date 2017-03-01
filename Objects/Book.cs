@@ -220,6 +220,7 @@ namespace LibraryApp.Objects
             return foundBook;
         }
 
+        //return authors linked to book
         public List<Author> GetAuthors()
         {
             SqlConnection conn = DB.Connection();
@@ -252,8 +253,22 @@ namespace LibraryApp.Objects
             return authors;
         }
 
+        //add row to books_authors
         public void AddAuthor(Author author)
         {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT INTO books_authors (books_id, authors_id) VALUES (@BookId, @AuthorId);", conn);
+            cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+            cmd.Parameters.Add(new SqlParameter("@AuthorId", author.GetId()));
+
+            cmd.ExecuteNonQuery();
+
+            if (conn != null)
+            {
+                conn.Close();
+            }
 
         }
     }
