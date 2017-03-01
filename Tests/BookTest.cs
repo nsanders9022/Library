@@ -26,6 +26,18 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        //test if equals override works
+       [Fact]
+       public void TestEqualOverride_TrueIfBookTitleIsSame()
+       {
+           //Arrange, Act
+           Book firstBook = new Book("War and Peace");
+           Book secondBook = new Book("War and Peace");
+
+           //Assert
+           Assert.Equal(firstBook, secondBook);
+       }
+
         //Delete everything between tests
         public void Dispose()
         {

@@ -60,12 +60,28 @@ namespace LibraryApp.Objects
             {
                 rdr.Close();
             }
-            
+
             if(conn != null)
             {
                 conn.Close();
             }
             return allBooks;
+        }
+
+        public override bool Equals(System.Object otherBook)
+        {
+            if (!(otherBook is Book))
+            {
+                return false;
+            }
+            else
+            {
+                Book newBook = (Book) otherBook;
+                bool idEquality = (this.GetId() == newBook.GetId());
+                bool titleEquality = (this.GetTitle() == newBook.GetTitle());
+
+                return (idEquality && titleEquality);
+            }
         }
     }
 }
