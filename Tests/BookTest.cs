@@ -55,6 +55,24 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        //tests that each instance is assigned corresponding db id
+        [Fact]
+        public void TestSave_AssignIdtoObject()
+        {
+            //Arrange
+            Book testBook = new Book("War and Peace");
+
+            //Act
+            testBook.Save();
+            Book savedBook = Book.GetAll()[0];
+
+            //Assert
+            int actualResult = savedBook.GetId();
+            int expectedResult = testBook.GetId();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {
