@@ -137,6 +137,28 @@ namespace LibraryApp.Objects
             Assert.Equal(verify, result);
         }
 
+        [Fact]
+        public void Test_UpdateReturnDate_UpdatesReturnDateinDB()
+        {
+            //Arrange
+            DateTime dueDate = new DateTime(2017, 3, 15);
+            DateTime returnDate = new DateTime(2017, 3, 7);
+            CheckOut testCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            testCheckOut.Save();
+
+            DateTime newReturnDate = new DateTime(2017, 4, 7);
+
+            //Act
+            testCheckOut.UpdateReturnDate(newReturnDate);
+
+
+            //Assert
+            DateTime actualResult = testCheckOut.GetReturnDate();
+            DateTime expectedResult = newReturnDate;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {

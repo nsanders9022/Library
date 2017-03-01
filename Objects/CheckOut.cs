@@ -197,5 +197,36 @@ namespace LibraryApp.Objects
 
             conn.Close();
         }
+
+        public void UpdateReturnDate(DateTime newReturnDate)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            //new command to change any changed fields
+            SqlCommand cmd = new SqlCommand("UPDATE checkouts SET date_returned = @ReturnDate OUTPUT INSERTED.date_returned WHERE id = @CheckoutId;", conn);
+
+            //Get id of author to use in command
+            cmd.Parameters.Add(new SqlParameter("@CheckoutId", this.GetId()));
+
+            cmd.Parameters.Add(new SqlParameter("@ReturnDate", newReturnDate));
+
+            //execute reader
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                this._returnDate = rdr.GetDateTime(0);
+            }
+
+            if(rdr!= null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
     }
 }
