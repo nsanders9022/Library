@@ -172,5 +172,18 @@ namespace LibraryApp.Objects
                 conn.Close();
             }
         }
+
+        //delete book from db
+        public void DeleteBook()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("DELETE FROM books WHERE id = @BookId;", conn);
+            cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+        }
     }
 }

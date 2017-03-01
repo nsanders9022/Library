@@ -1,12 +1,17 @@
-# University Registrar Management
+# Library Manager
 
 #### By _**Alexandra Holcombe & Nicole Sanders**_
 
 ## Description
 
-*  As a registrar, I want to enter a student, so I can keep track of all students enrolled at this University. I should be able to provide a name and date of enrollment.
-*  As a registrar, I want to enter a course, so I can keep track of all of the courses the University offers. I should be able to provide a course name and a course number (ex. HIST100).
-*  As a registrar, I want to be able to assign students to a course, so that teachers know which students are in their course. A course can have many students and a student can take many courses at the same time.
+* As a librarian, I want to create, read, update, delete, and list books in the catalog, so that we can keep track of our inventory.
+* As a librarian, I want to search for a book by author or title, so that I can find a book when there are a lot of books in the library.
+* As a librarian, I want to enter multiple authors for a book, so that I can include accurate information in my catalog. (Hint: make an authors table and a books table with a many-to-many relationship.)
+* As a patron, I want to check a book out, so that I can take it home with me.
+* As a patron, I want to know how many copies of a book are on the shelf, so that I can see if any are available. (Hint: make a copies table; a book should have many copies.)
+* As a patron, I want to see a history of all the books I checked out, so that I can look up the name of that awesome sci-fi novel I read three years ago. (Hint: make a checkouts table that is a join table between patrons and copies.)
+* As a patron, I want to know when a book I checked out is due, so that I know when to return it.
+* As a librarian, I want to see a list of overdue books, so that I can call up the patron who checked them out and tell them to bring them back - OR ELSE!
 
 ***
 
@@ -14,14 +19,22 @@
 
 #### Create Databases
 * In `SQLCMD`:  
-        `> CREATE DATABASE hair_salon`  
+        `> CREATE DATABASE library`  
         `> GO`  
-        `> USE hair_salon`  
+        `> USE library`  
         `> GO`  
-        `> CREATE TABLE books (id INT IDENTITY(1,1), name VARCHAR(255));`  
-        `> GO`  
-        `> CREATE TABLE clients (id INT IDENTITY(1,1), name VARCHAR(255), book_id INT);`  
-        `> GO`  
+        `> CREATE TABLE books ( id INT IDENTITY(1,1), title VARCHAR(255));`
+        `> GO`
+        `> CREATE TABLE copies ( id INT IDENTITY(1,1), books_id INT);`
+        `> GO`
+        `> CREATE TABLE books_authors ( id INT IDENTITY(1,1), books_id INT, authors_id INT);`
+        `> GO`
+        `> CREATE TABLE authors ( id INT IDENTITY(1,1), first_name VARCHAR(255), last_name vARCHAR(255));`
+        `> GO`
+        `> CREATE TABLE checkouts ( id INT IDENTITY(1,1), due_date DATETIME, date_returned DATETIME, patrons_id INT, copies_id INT);`
+        `> GO`
+        `> CREATE TABLE patrons ( id INT IDENTITY(1,1), first_name VARCHAR(255), last_name VARCHAR(255));`
+        `> GO`
 
 * Requires DNU, DNX, MSSQL, and Mono
 * Clone to local machine

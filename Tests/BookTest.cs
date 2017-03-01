@@ -127,6 +127,24 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        [Fact]
+        public void Test_DeleteThisBook_OneBookDeletedFromDatabase()
+        {
+            //Arrange
+            Book firstBook = new Book("War and Peace");
+            Book secondBook = new Book("War of the Worlds");
+            firstBook.Save();
+            secondBook.Save();
+
+            //Act
+            firstBook.DeleteBook();
+            List<Book> result = Book.GetAll();
+            List<Book> verify = new List<Book>{secondBook};
+
+            //Assert
+            Assert.Equal(verify, result);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {
