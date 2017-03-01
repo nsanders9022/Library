@@ -157,119 +157,60 @@ namespace LibraryApp.Objects
         }
 
         public void Update(string newFirstName = null, string newLastName = null)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            //new command to change any changed fields
+            SqlCommand cmd = new SqlCommand("UPDATE authors SET first_name = @newFirstName, last_name = @newLastName OUTPUT INSERTED.first_name, INSERTED.last_name WHERE id = @AuthorId;", conn);
+
+            //Get id of author to use in command
+            cmd.Parameters.Add(new SqlParameter("@AuthorId", this.GetId()));
+
+            //CHANGE FIRST NAME
+
+            //If there is a new first name, change it
+            if (!String.IsNullOrEmpty(newFirstName))
             {
-              SqlConnection conn = DB.Connection();
-              conn.Open();
+                cmd.Parameters.Add(new SqlParameter("@newFirstName", newFirstName));
+            }
+            //if there isn't a new first name, don't change the name
+            else
+            {
+                cmd.Parameters.Add(new SqlParameter("@newFirstName", this.GetFirstName()));
+            }
 
-              //new command to change any changed fields
-              SqlCommand cmd = new SqlCommand("UPDATE authors SET first_name = @newFirstName, last_name = @newLastName OUTPUT INSERTED.first_name, INSERTED.last_name WHERE id = @AuthorId;", conn);
+            //CHANGE LAST NAME
 
-              //Get id of author to use in command
-              cmd.Parameters.Add();
-              SqlParameter restaurantIdParameter = new SqlParameter();
-              restaurantIdParameter.ParameterName = "@AuthorId";
-              restaurantIdParameter.Value = this.GetId();
-              cmd.Parameters.Add(restaurantIdParameter);
+            //If there is a new last name, change it
+            if (!String.IsNullOrEmpty(newLastName))
+            {
+                cmd.Parameters.Add(new SqlParameter("@newLastName", newLastName));
+            }
+            //if there isn't a new last name, don't change the name
+            else
+            {
+                cmd.Parameters.Add(new SqlParameter("@newLastName", this.GetLastName()));
+            }
 
-              //CHANGE RESTAURANT NAME
-              SqlParameter newRestaurantNameParameter = new SqlParameter();
-              newRestaurantNameParameter.ParameterName = "@newRestaurantName";
+            //execute reader
+            SqlDataReader rdr = cmd.ExecuteReader();
 
-              //If there is a new restaurant name, change it
-              if (!String.IsNullOrEmpty(newRestaurantName))
-              {
-                newRestaurantNameParameter.Value = newRestaurantName;
-              }
-              //if there isn't a new restaurant name, don't change the name
-              else
-              {
-                newRestaurantNameParameter.Value = this.GetRestaurantName();
-              }
-              cmd.Parameters.Add(newRestaurantNameParameter);
+            while (rdr.Read())
+            {
+                this._firstName = rdr.GetString(0);
+                this._lastName = rdr.GetString(1);
+            }
 
-              //CHANGE CUISINE ID
-              SqlParameter newCuisineIdParameter = new SqlParameter();
-              newCuisineIdParameter.ParameterName = "@newCuisineId";
-
-              //If there is a new restaurant name, change it
-              if (newCuisineId != 0)
-              {
-                newCuisineIdParameter.Value = newCuisineId;
-              }
-              //if there isn't a new restaurant name, don't change the name
-              else
-              {
-                newCuisineIdParameter.Value = this.GetCuisineId();
-              }
-              cmd.Parameters.Add(newCuisineIdParameter);
-
-              //CHANGE ADDRESS
-              SqlParameter newAddressParameter = new SqlParameter();
-              newAddressParameter.ParameterName = "@newAddress";
-
-              //If there is a new restaurant name, change it
-              if (!String.IsNullOrEmpty(newAddress))
-              {
-                newAddressParameter.Value = newAddress;
-              }
-              //if there isn't a new restaurant name, don't change the name
-              else
-              {
-                newAddressParameter.Value = this.GetAddress();
-              }
-              cmd.Parameters.Add(newAddressParameter);
-
-              //CHANGE OPEN TIME
-              SqlParameter newOpenTimeParameter = new SqlParameter();
-              newOpenTimeParameter.ParameterName = "@newOpenTime";
-
-              //If there is a new restaurant name, change it
-              if (!String.IsNullOrEmpty(newOpenTime))
-              {
-                newOpenTimeParameter.Value = newOpenTime;
-              }
-              //if there isn't a new restaurant name, don't change the name
-              else
-              {
-                newOpenTimeParameter.Value = this.GetOpenTime();
-              }
-              cmd.Parameters.Add(newOpenTimeParameter);
-
-              //CHANGE CLOSE TIME
-              SqlParameter newCloseTimeParameter = new SqlParameter();
-              newCloseTimeParameter.ParameterName = "@newCloseTime";
-
-              //If there is a new restaurant name, change it
-              if (!String.IsNullOrEmpty(newCloseTime))
-              {
-                newCloseTimeParameter.Value = newCloseTime;
-              }
-              //if there isn't a new restaurant name, don't change the name
-              else
-              {
-                newCloseTimeParameter.Value = this.GetCloseTime();
-              }
-              cmd.Parameters.Add(newCloseTimeParameter);
-
-              //execute reader
-              SqlDataReader rdr = cmd.ExecuteReader();
-
-              while (rdr.Read())
-              {
-                this._restaurantName = rdr.GetString(0);
-                this._cuisineId = rdr.GetInt32(1);
-                this._address = rdr.GetString(2);
-                this._openTime = rdr.GetString(3);
-                this._closeTime = rdr.GetString(4);
-              }
-              if(rdr!= null)
-              {
+            if(rdr!= null)
+            {
                 rdr.Close();
-              }
-              if (conn != null)
-              {
+            }
+            if (conn != null)
+            {
                 conn.Close();
-              }
+            }
+        }
 
         //delete book from db
         public void DeleteAuthor()
@@ -285,25 +226,27 @@ namespace LibraryApp.Objects
         }
 
         //search for a book based on inputted title
-        public static Author SearchTitle(string title)
+        public static Author SearchAuthor(string lastName)
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM authors WHERE title = @AuthorTitle;", conn);
-            cmd.Parameters.Add(new SqlParameter("@AuthorTitle", title));
+            SqlCommand cmd = new SqlCommand("SELECT * FROM authors WHERE last_name = @newLastName;", conn);
+            cmd.Parameters.Add(new SqlParameter("@newLastName", lastName));
             SqlDataReader rdr = cmd.ExecuteReader();
 
             int foundId = 0;
-            string foundTitle = null;
+            string foundFirstName = null;
+            string foundLastName = null;
 
             while(rdr.Read())
             {
                 foundId = rdr.GetInt32(0);
-                foundTitle = rdr.GetString(1);
+                foundFirstName = rdr.GetString(1);
+                foundLastName = rdr.GetString(2);
             }
 
-            Author foundAuthor = new Author(foundTitle, foundId);
+            Author foundAuthor = new Author(foundFirstName, foundLastName, foundId);
 
             if(rdr != null)
             {
