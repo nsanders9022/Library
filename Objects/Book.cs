@@ -145,5 +145,32 @@ namespace LibraryApp.Objects
 
             return foundBook;
         }
+
+        public void UpdateTitle(string newTitle)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("UPDATE books SET title = @NewTitle OUTPUT INSERTED.title WHERE id = @BookId;", conn);
+            cmd.Parameters.Add(new SqlParameter("@NewTitle", newTitle));
+            cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while(rdr.Read())
+            {
+                this._title = rdr.GetString(0);
+            }
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
     }
 }

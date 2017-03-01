@@ -107,6 +107,26 @@ namespace LibraryApp.Objects
             Assert.Equal(testBook, foundBook);
         }
 
+        [Fact]
+        public void Test_Update_UpdatesBookTitleinDB()
+        {
+            //Arrange
+            Book testBook = new Book("War and Peace");
+            testBook.Save();
+
+            string newTitle = "War of the Worlds";
+
+            //Act
+            testBook.UpdateTitle(newTitle);
+
+
+            //Assert
+            string actualResult = testBook.GetTitle();
+            string expectedResult = newTitle;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {
