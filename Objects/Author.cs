@@ -137,8 +137,8 @@ namespace LibraryApp.Objects
             while(rdr.Read())
             {
                 foundId = rdr.GetInt32(0);
-                foundFirstName = rdr.GetFirstName(1);
-                foundLastName = rdr.GetLastName(2);
+                foundFirstName = rdr.GetString(1);
+                foundLastName = rdr.GetString(2);
             }
 
             Author foundAuthor = new Author(foundFirstName, foundLastName, foundId);
@@ -156,7 +156,7 @@ namespace LibraryApp.Objects
             return foundAuthor;
         }
 
-        public void Update(string newFirstName = null, string newLastName = null)
+        public void UpdateName(string newFirstName = null, string newLastName = null)
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
