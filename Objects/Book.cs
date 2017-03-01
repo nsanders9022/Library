@@ -83,5 +83,33 @@ namespace LibraryApp.Objects
                 return (idEquality && titleEquality);
             }
         }
+
+        //Save instance into database
+        public void Save()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT INTO books (title) OUTPUT INSERTED.id VALUES(@BookTitle);", conn);
+
+            cmd.Parameters.Add(new SqlParameter("@BookTitle", this.GetTitle()));
+
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while(rdr.Read())
+            {
+                this._id = rdr.GetInt32(0);
+            }
+
+            if(rdr != null)
+            {
+                rdr.Close();
+            }
+            if(conn != null)
+            {
+                conn.Close();
+            }
+        }
     }
 }

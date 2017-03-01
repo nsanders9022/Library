@@ -38,6 +38,23 @@ namespace LibraryApp.Objects
            Assert.Equal(firstBook, secondBook);
        }
 
+       //tests if instances are saved to db
+        [Fact]
+        public void Test_Save_SavesToDatabase()
+        {
+            //Arrange
+            Book newBook = new Book("War and Peace");
+
+            //Act
+            newBook.Save();
+
+            //Assert
+            List<Book> actualResult = Book.GetAll();
+            List<Book> expectedResult = new List<Book>{newBook};
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {
