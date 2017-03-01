@@ -27,18 +27,18 @@ namespace LibraryApp.Objects
         }
 
         //test if equals override works
-       [Fact]
-       public void TestEqualOverride_TrueIfBookTitleIsSame()
-       {
-           //Arrange, Act
-           Book firstBook = new Book("War and Peace");
-           Book secondBook = new Book("War and Peace");
+        [Fact]
+        public void TestEqualOverride_TrueIfBookTitleIsSame()
+        {
+            //Arrange, Act
+            Book firstBook = new Book("War and Peace");
+            Book secondBook = new Book("War and Peace");
 
-           //Assert
-           Assert.Equal(firstBook, secondBook);
-       }
+            //Assert
+            Assert.Equal(firstBook, secondBook);
+        }
 
-       //tests if instances are saved to db
+        //tests if instances are saved to db
         [Fact]
         public void Test_Save_SavesToDatabase()
         {
@@ -69,6 +69,25 @@ namespace LibraryApp.Objects
             //Assert
             int actualResult = savedBook.GetId();
             int expectedResult = testBook.GetId();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        //Tests that GetAll method pulls all items from db
+        [Fact]
+        public void TestGetAll_Books_ReturnsListOfBooks()
+        {
+            //Arrange
+            Book firstBook = new Book("War and Peace");
+            Book secondBook = new Book("War of the Worlds");
+
+            //Act
+            firstBook.Save();
+            secondBook.Save();
+
+            //Assert
+            List<Book> actualResult = Book.GetAll();
+            List<Book> expectedResult = new List<Book>{firstBook, secondBook};
 
             Assert.Equal(expectedResult, actualResult);
         }
