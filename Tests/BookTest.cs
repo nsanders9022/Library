@@ -92,6 +92,21 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        //Tests db-fetching specific item
+        [Fact]
+        public void TestFind_FindsBookInDatabase()
+        {
+            //Arrange
+            Book testBook = new Book("War and Peace");
+            testBook.Save();
+
+            //Act
+            Book foundBook = Book.Find(testBook.GetId());
+
+            //Assert
+            Assert.Equal(testBook, foundBook);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {
