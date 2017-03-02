@@ -269,7 +269,6 @@ namespace LibraryApp.Objects
             {
                 conn.Close();
             }
-
         }
     }
 }

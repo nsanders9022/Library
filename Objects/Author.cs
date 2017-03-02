@@ -294,8 +294,23 @@ namespace LibraryApp.Objects
             return books;
         }
 
+        //add row to books_authors
         public void AddBook(Book book)
         {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT INTO books_authors (books_id, authors_id) VALUES (@BookId, @AuthorId);", conn);
+            cmd.Parameters.Add(new SqlParameter("@BookId", book.GetId()));
+            cmd.Parameters.Add(new SqlParameter("@AuthorId", this.GetId()));
+
+            cmd.ExecuteNonQuery();
+
+            if (conn != null)
+            {
+                conn.Close();
+            }
+
         }
     }
 }
