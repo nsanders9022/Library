@@ -215,7 +215,6 @@ namespace LibraryApp.Objects
             //Arrange
             Book testBook = new Book("War and Peace");
             testBook.Save();
-            Copy testCopy = new Copy(testBook.GetId());
 
             //Act
             testBook.AddCopy(4);
@@ -227,6 +226,53 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        //Get all copies of individual book
+        [Fact]
+        public void GetBookCopies_ForBook_ListOfCopies()
+        {
+          //Arrange, Act
+          Book testBook = new Book("War and Peace");
+          testBook.Save();
+          int bookId = testBook.GetId();
+          testBook.AddCopy(4);
+
+          List<Copy> copyList = testBook.GetBookCopies();
+
+          //Assert
+          List<int> actualResult = new List<int>{};
+
+          foreach (Copy copy in copyList)
+          {
+            int thisCopy = copy.GetBookId();
+            actualResult.Add(thisCopy);
+          }
+
+          List<int> expectedResult = new List<int> {bookId, bookId, bookId, bookId};
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        // //See the number of available copies for a specific Book
+        // [Fact]
+        // public void AvailableCopies_GetNumberOfCopies_int()
+        // {
+        //   Book testBook = new Book("War and Peace");
+        //   testBook.Save();
+        //   testBook.AddCopy(4);
+        //
+        //   DateTime dueDate = new DateTime(2017, 3, 15);
+        //   DateTime returnDate = new DateTime(2017, 3, 7);
+        //   CheckOut firstCheckOut = new CheckOut(dueDate, returnDate, 1, );
+        //   CheckOut secondCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+        // }
+
+        // //Find first available copy of book to checkouts
+        // [Fact]
+        // public void CheckoutBook_GetFirstAvailableCopyOfBook_NewCheckout()
+        // {
+        //   //Arrange
+        //
+        // }
 
         //Delete everything between tests
         public void Dispose()
