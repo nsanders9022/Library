@@ -361,5 +361,25 @@ namespace LibraryApp.Objects
         conn.Close();
       }
     }
+    public int AvailableCopies()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM checkouts WHERE copies_id IN (SELECT id FROM copies WHERE books_id = @BookId);", conn);
+      cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int count = 0;
+
+      while(rdr.Read())
+      {
+        count += 1;
+      }
+
+      int totalCopies = this.GetCopies().Count;
+
+      return totalCopies - count;
+    }
   }
 }

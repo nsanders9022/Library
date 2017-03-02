@@ -252,7 +252,7 @@ namespace LibraryApp.Objects
           Assert.Equal(expectedResult, actualResult);
         }
 
-        //Find first available copy of book to checkouts
+        //Find first available copy of book to checkout
         [Fact]
         public void CheckoutBook_GetFirstAvailableCopyOfBookNoCurrentCheckouts_NewRow()
         {
@@ -270,21 +270,47 @@ namespace LibraryApp.Objects
           Assert.Equal(expectedResult, actualResult);
         }
 
+        //Find first available copy of book to checkout
+        [Fact]
+        public void CheckoutBook_GetFirstAvailableCopyOfBookOtherCheckouts_NewRow()
+        {
+          //Arrange
+          Book testBook = new Book("War and Peace");
+          testBook.Save();
+          testBook.AddCopy(4);
+          List<Copy> allCopies = testBook.GetCopies();
 
-        // //See the number of available copies for a specific Book
-        // [Fact]
-        // public void AvailableCopies_GetNumberOfCopies_int()
-        // {
-        //   Book testBook = new Book("War and Peace");
-        //   testBook.Save();
-        //   testBook.AddCopy(4);
-        //   List<Copy> allCopies = testBook.GetCopies();
-        //
-        //   DateTime dueDate = new DateTime(2017, 3, 15);
-        //   DateTime returnDate = new DateTime(2017, 3, 7);
-        //
-        //   //Assert
-        // }
+          testBook.CheckoutBook(1);
+          testBook.CheckoutBook(1);
+
+          testBook.CheckoutBook(1);
+          int expectedResult = allCopies[2].GetId();
+          List<CheckOut> allCheckOuts = CheckOut.GetAll();
+          int actualResult = allCheckOuts[2].GetCopiesId();
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+
+        //See the number of available copies for a specific Book
+        [Fact]
+        public void AvailableCopies_GetNumberOfCopies_int()
+        {
+          Book testBook = new Book("War and Peace");
+          testBook.Save();
+          testBook.AddCopy(4);
+          List<Copy> allCopies = testBook.GetCopies();
+
+          testBook.CheckoutBook(1);
+          testBook.CheckoutBook(1);
+
+          int expectedResult = 2;
+          int actualResult = testBook.AvailableCopies();
+
+          Assert.Equal(expectedResult, actualResult);
+
+          //Assert
+        }
 
 
         //Delete everything between tests
