@@ -332,14 +332,34 @@ namespace LibraryApp.Objects
     //Create new row in checkout table
     public void CheckoutBook(int patronId)
     {
-      DateTime dueDate = DateTime.Today.AddDays(14);
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-      List<Copy> allCopies = this.GetCopies();
-      int copyId = allCopies[0].GetId();
+      SqlCommand cmd = new SqlCommand("SELECT TOP(1) id FROM copies WHERE books_id = @BookId AND copies.id NOT IN (SELECT copies_id FROM checkouts);", conn);
+      cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int copyId = 0;
+
+      while(rdr.Read())
+      {
+        copyId = rdr.GetInt32(0);
+      }
+
+      DateTime dueDate = DateTime.Today.AddDays(14);
 
       CheckOut newCheckOut = new CheckOut(dueDate, patronId, copyId);
 
       newCheckOut.Save();
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
   }
 }
