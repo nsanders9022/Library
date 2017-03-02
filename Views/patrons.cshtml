@@ -1,0 +1,8 @@
+<h1>All patrons</h1>
+
+@foreach (var patron in @Model)
+{
+  <li>@patron.GetLastName(), @patron.GetFirstName()</li>
+}
+
+<p><a href="/">Go Home</a></p>

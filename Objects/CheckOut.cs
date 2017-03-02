@@ -270,5 +270,35 @@ namespace LibraryApp.Objects
 
             return allDue;
         }
+
+        public string GetBookTitle()
+        {
+          SqlConnection conn = DB.Connection();
+          conn.Open();
+
+          SqlCommand cmd = new SqlCommand("SELECT books.title FROM checkouts JOIN copies ON (checkouts.copies_id = copies.id) JOIN books ON (copies.books_id = books.id) WHERE checkouts.id = @CheckoutId;", conn);
+
+          cmd.Parameters.Add(new SqlParameter("@CheckoutId", this.GetId()));
+          SqlDataReader rdr = cmd.ExecuteReader();
+
+          string bookTitle = "";
+
+          while (rdr.Read())
+          {
+            bookTitle = rdr.GetString(0);
+          }
+
+          if(rdr != null)
+          {
+              rdr.Close();
+          }
+
+          if(conn != null)
+          {
+              conn.Close();
+          }
+
+          return bookTitle;
+        }
     }
 }

@@ -1,0 +1,16 @@
+<h1>Checkouts</h1>
+
+<ul>
+  @* Key is checkout, value is patron *@
+  @{
+    foreach(var entry in Model)
+    {
+      <li>@entry.Value.GetLastName(), @entry.Value.GetFirstName()</li>
+      <li>@entry.Key.GetBookTitle()</li>
+    }
+  }
+</ul>
+
+<p><a href="/books">View all books</a></p>
+
+<p><a href="/patrons">View all patrons</a></p>

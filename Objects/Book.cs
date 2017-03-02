@@ -392,7 +392,7 @@ namespace LibraryApp.Objects
 
       DateTime today = DateTime.Today;
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM checkouts WHERE patrons_id = @PatronId AND copies_id IN (SELECT id FROM copies WHERE books_id = @BookId);", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE checkouts SET date_returned = @ReturnDate WHERE patrons_id = @PatronId AND copies_id IN (SELECT id FROM copies WHERE books_id = @BookId);", conn);
       cmd.Parameters.Add(new SqlParameter("@PatronId", patronId));
       cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
       cmd.Parameters.Add(new SqlParameter("@ReturnDate", today));

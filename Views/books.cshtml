@@ -1,0 +1,8 @@
+<h1>All books</h1>
+
+@foreach (var book in @Model)
+{
+  <li>@book.GetTitle()</li>
+}
+
+<p><a href="/">Go Home</a></p>
