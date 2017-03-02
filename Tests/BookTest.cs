@@ -227,30 +227,30 @@ namespace LibraryApp.Objects
         }
 
         //Get all copies of individual book
-        [Fact]
-        public void GetBookCopies_ForBook_ListOfCopies()
-        {
-          //Arrange, Act
-          Book testBook = new Book("War and Peace");
-          testBook.Save();
-          int bookId = testBook.GetId();
-          testBook.AddCopy(4);
-
-          List<Copy> copyList = testBook.GetBookCopies();
-
-          //Assert
-          List<int> actualResult = new List<int>{};
-
-          foreach (Copy copy in copyList)
-          {
-            int thisCopy = copy.GetBookId();
-            actualResult.Add(thisCopy);
-          }
-
-          List<int> expectedResult = new List<int> {bookId, bookId, bookId, bookId};
-
-          Assert.Equal(expectedResult, actualResult);
-        }
+        // [Fact]
+        // public void GetBookCopies_ForBook_ListOfCopies()
+        // {
+        //   //Arrange, Act
+        //   Book testBook = new Book("War and Peace");
+        //   testBook.Save();
+        //   int bookId = testBook.GetId();
+        //   testBook.AddCopy(4);
+        //
+        //   List<Copy> copyList = testBook.GetBookCopies();
+        //
+        //   //Assert
+        //   List<int> actualResult = new List<int>{};
+        //
+        //   foreach (Copy copy in copyList)
+        //   {
+        //     int thisCopy = copy.GetBookId();
+        //     actualResult.Add(thisCopy);
+        //   }
+        //
+        //   List<int> expectedResult = new List<int> {bookId, bookId, bookId, bookId};
+        //
+        //   Assert.Equal(expectedResult, actualResult);
+        // }
 
         // //See the number of available copies for a specific Book
         // [Fact]

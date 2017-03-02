@@ -272,7 +272,7 @@ namespace LibraryApp.Objects
         }
 
         //return copies of a book
-        public int CountCopies()
+        public List<Copy> GetCopies()
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
@@ -300,7 +300,13 @@ namespace LibraryApp.Objects
             {
                 conn.Close();
             }
-            return copies.Count;
+            return copies;
+        }
+
+        //returns number of copies of a book
+        public int CountCopies()
+        {
+          return this.GetCopies().Count;
         }
 
         public void AddCopy(int numberOfCopies)
