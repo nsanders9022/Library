@@ -13,11 +13,13 @@ namespace LibraryApp.Objects
         private int _patronsId;
         private int _copiesId;
 
-        public CheckOut(DateTime dueDate, DateTime returnDate, int patronsId, int copiesId, int id = 0)
+        public DateTime defaultReturnDate = new DateTime(1900, 1, 1);
+
+        public CheckOut(DateTime dueDate, int patronsId, int copiesId, int id = 0)
         {
             _id = id;
             _dueDate = dueDate;
-            _returnDate = returnDate;
+            _returnDate = defaultReturnDate;
             _patronsId = patronsId;
             _copiesId = copiesId;
         }
@@ -73,10 +75,9 @@ namespace LibraryApp.Objects
             {
                 int id = rdr.GetInt32(0);
                 DateTime dueDate = rdr.GetDateTime(1);
-                DateTime returnDate = rdr.GetDateTime(2);
                 int patronsId = rdr.GetInt32(3);
                 int copiesId = rdr.GetInt32(4);
-                CheckOut newCheckOut = new CheckOut(dueDate, returnDate, patronsId, copiesId, id);
+                CheckOut newCheckOut = new CheckOut(dueDate, patronsId, copiesId, id);
                 allCheckOuts.Add(newCheckOut);
             }
 
@@ -165,12 +166,12 @@ namespace LibraryApp.Objects
             {
                 foundId = rdr.GetInt32(0);
                 foundDueDate = rdr.GetDateTime(1);
-                foundReturnDate = rdr.GetDateTime(2);
+                // foundReturnDate = rdr.GetDateTime(2);
                 foundPatronsId = rdr.GetInt32(3);
                 foundCopiesId = rdr.GetInt32(4);
             }
 
-            CheckOut foundCheckOut = new CheckOut(foundDueDate, foundReturnDate, foundPatronsId, foundCopiesId, foundId);
+            CheckOut foundCheckOut = new CheckOut(foundDueDate, foundPatronsId, foundCopiesId, foundId);
 
             if(rdr != null)
             {
@@ -249,11 +250,11 @@ namespace LibraryApp.Objects
             {
                 int foundId = rdr.GetInt32(0);
                 DateTime foundDueDate = rdr.GetDateTime(1);
-                DateTime foundReturnDate = rdr.GetDateTime(2);
+                // DateTime foundReturnDate = rdr.GetDateTime(2);
                 int foundPatronsId = rdr.GetInt32(3);
                 int foundCopiesId = rdr.GetInt32(4);
 
-                CheckOut foundCheckout = new CheckOut(foundDueDate, foundReturnDate, foundPatronsId, foundCopiesId, foundId);
+                CheckOut foundCheckout = new CheckOut(foundDueDate, foundPatronsId, foundCopiesId, foundId);
                 allDue.Add(foundCheckout);
             }
 

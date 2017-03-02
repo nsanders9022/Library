@@ -33,8 +33,8 @@ namespace LibraryApp.Objects
             //Arrange, Act
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut firstCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
-            CheckOut secondCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            CheckOut firstCheckOut = new CheckOut(dueDate, 1, 1);
+            CheckOut secondCheckOut = new CheckOut(dueDate, 1, 1);
 
             //Assert
             Assert.Equal(firstCheckOut, secondCheckOut);
@@ -47,7 +47,7 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut newCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            CheckOut newCheckOut = new CheckOut(dueDate, 1, 1);
 
             //Act
             newCheckOut.Save();
@@ -66,7 +66,7 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
 
             //Act
             testCheckOut.Save();
@@ -86,8 +86,8 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut firstCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
-            CheckOut secondCheckOut = new CheckOut(dueDate, returnDate, 2, 2);
+            CheckOut firstCheckOut = new CheckOut(dueDate, 1, 1);
+            CheckOut secondCheckOut = new CheckOut(dueDate, 2, 2);
 
             //Act
             firstCheckOut.Save();
@@ -107,7 +107,7 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
             testCheckOut.Save();
 
             //Act
@@ -123,8 +123,8 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut firstCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
-            CheckOut secondCheckOut = new CheckOut(dueDate, returnDate, 2, 2);
+            CheckOut firstCheckOut = new CheckOut(dueDate, 1, 1);
+            CheckOut secondCheckOut = new CheckOut(dueDate, 2, 2);
             firstCheckOut.Save();
             secondCheckOut.Save();
 
@@ -143,7 +143,7 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
             testCheckOut.Save();
 
             DateTime newReturnDate = new DateTime(2017, 4, 7);
@@ -166,7 +166,7 @@ namespace LibraryApp.Objects
             //Arrange
             DateTime dueDate = new DateTime(2017, 3, 15);
             DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
             testCheckOut.Save();
 
             //Act

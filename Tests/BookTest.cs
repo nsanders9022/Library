@@ -252,6 +252,43 @@ namespace LibraryApp.Objects
           Assert.Equal(expectedResult, actualResult);
         }
 
+        // //Find first available copy of book to checkouts
+        // [Fact]
+        // public void CheckoutBook_GetFirstAvailableCopyOfBookNoCurrentCheckouts_NewRow()
+        // {
+        //   //Arrange
+        //   Book testBook = new Book("War and Peace");
+        //   testBook.Save();
+        //   testBook.AddCopy(4);
+        //   List<Copy> allCopies = testBook.GetCopies();
+        //
+        //   testBook.CheckoutBook(1);
+        //   int expectedResult = allCopies[0].GetId();
+        //   List<CheckOut> allCheckOuts = CheckOut.GetAll();
+        //   int actualResult = allCheckOuts[0].GetId();
+        //
+        //   Assert.Equal(expectedResult, actualResult);
+        // }
+        // //Find first available copy of book to checkouts
+        // [Fact]
+        // public void CheckoutBook_GetFirstAvailableCopyOfBook_NewCheckout()
+        // {
+        //   //Arrange, Act
+        //   Book testBook = new Book("War and Peace");
+        //   testBook.Save();
+        //   testBook.AddCopy(4);
+        //   List<Copy> allCopies = testBook.GetCopies();
+        //
+        //   //Assert
+        //   testBook.CheckoutBook(1);
+        //   int actualResult = testBook.GetId();
+        //   DateTime dueDate = new DateTime(2017, 3, 15);
+        //   DateTime returnDate = new DateTime(2017, 3, 7);
+        //   CheckOut expectedResult = new CheckOut(dueDate, returnDate, 1, allCopies[0].GetId());
+        //
+        //   Assert.Equal(expectedResult.GetId(), actualResult);
+        // }
+
         // //See the number of available copies for a specific Book
         // [Fact]
         // public void AvailableCopies_GetNumberOfCopies_int()
@@ -259,20 +296,14 @@ namespace LibraryApp.Objects
         //   Book testBook = new Book("War and Peace");
         //   testBook.Save();
         //   testBook.AddCopy(4);
+        //   List<Copy> allCopies = testBook.GetCopies();
         //
         //   DateTime dueDate = new DateTime(2017, 3, 15);
         //   DateTime returnDate = new DateTime(2017, 3, 7);
-        //   CheckOut firstCheckOut = new CheckOut(dueDate, returnDate, 1, );
-        //   CheckOut secondCheckOut = new CheckOut(dueDate, returnDate, 1, 1);
+        //
+        //   //Assert
         // }
 
-        // //Find first available copy of book to checkouts
-        // [Fact]
-        // public void CheckoutBook_GetFirstAvailableCopyOfBook_NewCheckout()
-        // {
-        //   //Arrange
-        //
-        // }
 
         //Delete everything between tests
         public void Dispose()
@@ -280,6 +311,7 @@ namespace LibraryApp.Objects
             Book.DeleteAll();
             Author.DeleteAll();
             Copy.DeleteAll();
+            CheckOut.DeleteAll();
         }
     }
 }
