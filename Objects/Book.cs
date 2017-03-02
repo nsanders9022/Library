@@ -272,7 +272,7 @@ namespace LibraryApp.Objects
         }
 
         //return copies of a book
-        public int GetCopies()
+        public int CountCopies()
         {
             SqlConnection conn = DB.Connection();
             conn.Open();

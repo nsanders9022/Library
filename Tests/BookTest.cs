@@ -196,11 +196,11 @@ namespace LibraryApp.Objects
 
         //Test that if there are no copies, GetAll returns empty
         [Fact]
-        public void TestGetCopies_NoCopies_ReturnsEmptyList()
+        public void TestCountCopies_NoCopies_ReturnsEmptyList()
         {
             //Arrange, Act
             Book testBook = new Book("War and Peace");
-            int allCopies= testBook.GetCopies();
+            int allCopies= testBook.CountCopies();
 
             //Assert
             int actualResult = allCopies;
@@ -221,7 +221,7 @@ namespace LibraryApp.Objects
             testBook.AddCopy(4);
 
             //Assert
-            int actualResult = testBook.GetCopies();
+            int actualResult = testBook.CountCopies();
             int expectedResult = 4;
 
             Assert.Equal(expectedResult, actualResult);
