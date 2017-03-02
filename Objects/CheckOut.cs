@@ -242,10 +242,6 @@ namespace LibraryApp.Objects
             cmd.Parameters.Add(new SqlParameter("@DueDate", dueDate));
             SqlDataReader rdr = cmd.ExecuteReader();
 
-            // int foundId = 0;
-            // string foundFirstName = null;
-            // string foundLastName = null;
-
             while(rdr.Read())
             {
                 int foundId = rdr.GetInt32(0);

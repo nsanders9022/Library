@@ -329,21 +329,17 @@ namespace LibraryApp.Objects
       }
     }
 
-    // //Create new row in checkout table
-    // public void CheckoutBook(int patronId)
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //
-    //   DateTime dueDate = DateTime.Today.AddDays(14);
-    //
-    //   List<Copy> allCopies = this.GetCopies();
-    //
-    //   CheckOut newCheckOut = new CheckOut(dueDate, returnDate, patr)
-    //
-    //   // cmd.ExecuteReader();
-    //
-    //   cmd.ExecuteNonQuery();
-    // }
+    //Create new row in checkout table
+    public void CheckoutBook(int patronId)
+    {
+      DateTime dueDate = DateTime.Today.AddDays(14);
+
+      List<Copy> allCopies = this.GetCopies();
+      int copyId = allCopies[0].GetId();
+
+      CheckOut newCheckOut = new CheckOut(dueDate, patronId, copyId);
+
+      newCheckOut.Save();
+    }
   }
 }
