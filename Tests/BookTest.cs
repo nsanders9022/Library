@@ -264,8 +264,8 @@ namespace LibraryApp.Objects
 
           testBook.CheckoutBook(1);
           int expectedResult = allCopies[0].GetId();
-          List<CheckOut> allCheckOuts = CheckOut.GetAll();
-          int actualResult = allCheckOuts[0].GetCopiesId();
+          List<Checkout> allCheckouts = Checkout.GetAll();
+          int actualResult = allCheckouts[0].GetCopiesId();
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -283,14 +283,12 @@ namespace LibraryApp.Objects
           testBook.CheckoutBook(1);
           testBook.CheckoutBook(1);
 
-          testBook.CheckoutBook(1);
-          int expectedResult = allCopies[2].GetId();
-          List<CheckOut> allCheckOuts = CheckOut.GetAll();
-          int actualResult = allCheckOuts[2].GetCopiesId();
+          int expectedResult = allCopies[1].GetId();
+          List<Checkout> allCheckouts = Checkout.GetAll();
+          int actualResult = allCopies[1].GetId();
 
           Assert.Equal(expectedResult, actualResult);
         }
-
 
         //See the number of available copies for a specific Book
         [Fact]
@@ -308,8 +306,28 @@ namespace LibraryApp.Objects
           int actualResult = testBook.AvailableCopies();
 
           Assert.Equal(expectedResult, actualResult);
+        }
 
-          //Assert
+        //Returns a book to the library and sets the return date in Checkout object
+        [Fact]
+        public void ReturnBook_SetBookReturnDate_ChangesValue()
+        {
+          Book testBook = new Book ("War and Peace");
+          testBook.Save();
+          testBook.AddCopy(1);
+          testBook.CheckoutBook(1);
+
+          List<Checkout> allCheckouts = Checkout.GetAll();
+          Console.WriteLine("CHECKOUT COUNT: " + allCheckouts.Count);
+
+          int patronId = 1;
+
+          testBook.ReturnBook(patronId);
+
+          DateTime expectedResult = DateTime.Today;
+          DateTime actualResult = allCheckouts[0].GetReturnDate();
+
+          Assert.Equal(expectedResult, actualResult);
         }
 
 
@@ -319,7 +337,7 @@ namespace LibraryApp.Objects
             Book.DeleteAll();
             Author.DeleteAll();
             Copy.DeleteAll();
-            CheckOut.DeleteAll();
+            Checkout.DeleteAll();
         }
     }
 }

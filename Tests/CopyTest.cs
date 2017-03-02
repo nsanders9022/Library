@@ -128,7 +128,10 @@ namespace LibraryApp.Objects
         //Delete everything between tests
         public void Dispose()
         {
-            Copy.DeleteAll();
+          Book.DeleteAll();
+          Author.DeleteAll();
+          Copy.DeleteAll();
+          Checkout.DeleteAll();
         }
     }
 }

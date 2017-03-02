@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace LibraryApp.Objects
 {
-    public class CheckOut
+    public class Checkout
     {
         private int _id;
         private DateTime _dueDate;
@@ -15,7 +15,7 @@ namespace LibraryApp.Objects
 
         public DateTime defaultReturnDate = new DateTime(1900, 1, 1);
 
-        public CheckOut(DateTime dueDate, int patronsId, int copiesId, int id = 0)
+        public Checkout(DateTime dueDate, int patronsId, int copiesId, int id = 0)
         {
             _id = id;
             _dueDate = dueDate;
@@ -49,7 +49,12 @@ namespace LibraryApp.Objects
             return _copiesId;
         }
 
-        //delete all rows from checkouts db table
+        public void SetReturnDate(DateTime newReturnDate)
+        {
+          _returnDate = newReturnDate;
+        }
+
+        //delete all rows from Checkouts db table
         public static void DeleteAll()
         {
             SqlConnection conn = DB.Connection();
@@ -60,10 +65,10 @@ namespace LibraryApp.Objects
             conn.Close();
         }
 
-        //return list of all checkouts in the database
-        public static List<CheckOut> GetAll()
+        //return list of all Checkouts in the database
+        public static List<Checkout> GetAll()
         {
-            List<CheckOut> allCheckOuts = new List<CheckOut>{};
+            List<Checkout> allCheckouts = new List<Checkout>{};
 
             SqlConnection conn = DB.Connection();
             conn.Open();
@@ -77,8 +82,8 @@ namespace LibraryApp.Objects
                 DateTime dueDate = rdr.GetDateTime(1);
                 int patronsId = rdr.GetInt32(3);
                 int copiesId = rdr.GetInt32(4);
-                CheckOut newCheckOut = new CheckOut(dueDate, patronsId, copiesId, id);
-                allCheckOuts.Add(newCheckOut);
+                Checkout newCheckout = new Checkout(dueDate, patronsId, copiesId, id);
+                allCheckouts.Add(newCheckout);
             }
 
             if(rdr != null)
@@ -90,23 +95,23 @@ namespace LibraryApp.Objects
             {
                 conn.Close();
             }
-            return allCheckOuts;
+            return allCheckouts;
         }
 
-        public override bool Equals(System.Object otherCheckOut)
+        public override bool Equals(System.Object otherCheckout)
         {
-            if (!(otherCheckOut is CheckOut))
+            if (!(otherCheckout is Checkout))
             {
                 return false;
             }
             else
             {
-                CheckOut newCheckOut = (CheckOut) otherCheckOut;
-                bool idEquality = (this.GetId() == newCheckOut.GetId());
-                bool dueDateEquality = (this.GetDueDate() == newCheckOut.GetDueDate());
-                bool returnDateEquality = (this.GetReturnDate() == newCheckOut.GetReturnDate());
-                bool patronsIdEquality = (this.GetPatronsId() == newCheckOut.GetPatronsId());
-                bool copiesIdEquality = (this.GetCopiesId() == newCheckOut.GetCopiesId());
+                Checkout newCheckout = (Checkout) otherCheckout;
+                bool idEquality = (this.GetId() == newCheckout.GetId());
+                bool dueDateEquality = (this.GetDueDate() == newCheckout.GetDueDate());
+                bool returnDateEquality = (this.GetReturnDate() == newCheckout.GetReturnDate());
+                bool patronsIdEquality = (this.GetPatronsId() == newCheckout.GetPatronsId());
+                bool copiesIdEquality = (this.GetCopiesId() == newCheckout.GetCopiesId());
 
                 return (idEquality && dueDateEquality && returnDateEquality && patronsIdEquality && copiesIdEquality);
             }
@@ -146,14 +151,14 @@ namespace LibraryApp.Objects
             }
         }
 
-        //return checkout information as per id argument
-        public static CheckOut Find(int id)
+        //return Checkout information as per id argument
+        public static Checkout Find(int id)
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM checkouts WHERE id = @CheckOutId;", conn);
-            cmd.Parameters.Add(new SqlParameter("@CheckOutId", id.ToString()));
+            SqlCommand cmd = new SqlCommand("SELECT * FROM checkouts WHERE id = @CheckoutId;", conn);
+            cmd.Parameters.Add(new SqlParameter("@CheckoutId", id.ToString()));
             SqlDataReader rdr = cmd.ExecuteReader();
 
             int foundId = 0;
@@ -171,7 +176,7 @@ namespace LibraryApp.Objects
                 foundCopiesId = rdr.GetInt32(4);
             }
 
-            CheckOut foundCheckOut = new CheckOut(foundDueDate, foundPatronsId, foundCopiesId, foundId);
+            Checkout foundCheckout = new Checkout(foundDueDate, foundPatronsId, foundCopiesId, foundId);
 
             if(rdr != null)
             {
@@ -183,17 +188,17 @@ namespace LibraryApp.Objects
                 conn.Close();
             }
 
-            return foundCheckOut;
+            return foundCheckout;
         }
 
         //delete copy from db
-        public void DeleteCheckOut()
+        public void DeleteCheckout()
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("DELETE FROM checkouts WHERE id = @CheckOutId;", conn);
-            cmd.Parameters.Add(new SqlParameter("@CheckOutId", this.GetId()));
+            SqlCommand cmd = new SqlCommand("DELETE FROM checkouts WHERE id = @CheckoutId;", conn);
+            cmd.Parameters.Add(new SqlParameter("@CheckoutId", this.GetId()));
             cmd.ExecuteNonQuery();
 
             conn.Close();
@@ -209,7 +214,6 @@ namespace LibraryApp.Objects
 
             //Get id of author to use in command
             cmd.Parameters.Add(new SqlParameter("@CheckoutId", this.GetId()));
-
             cmd.Parameters.Add(new SqlParameter("@ReturnDate", newReturnDate));
 
             //execute reader
@@ -231,9 +235,9 @@ namespace LibraryApp.Objects
         }
 
         //search for a book based on inputted title
-        public static List<CheckOut> SearchDueDate(DateTime dueDate)
+        public static List<Checkout> SearchDueDate(DateTime dueDate)
         {
-            List<CheckOut> allDue = new List<CheckOut>{};
+            List<Checkout> allDue = new List<Checkout>{};
 
             SqlConnection conn = DB.Connection();
             conn.Open();
@@ -250,7 +254,7 @@ namespace LibraryApp.Objects
                 int foundPatronsId = rdr.GetInt32(3);
                 int foundCopiesId = rdr.GetInt32(4);
 
-                CheckOut foundCheckout = new CheckOut(foundDueDate, foundPatronsId, foundCopiesId, foundId);
+                Checkout foundCheckout = new Checkout(foundDueDate, foundPatronsId, foundCopiesId, foundId);
                 allDue.Add(foundCheckout);
             }
 

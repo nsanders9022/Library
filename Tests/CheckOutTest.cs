@@ -6,180 +6,184 @@ using System.Data.SqlClient;
 
 namespace LibraryApp.Objects
 {
-    public class CheckOutTest: IDisposable
+  public class CheckoutTest: IDisposable
+  {
+    public CheckoutTest()
     {
-        public CheckOutTest()
-        {
-            DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=library_test;Integrated Security=SSPI;";
-        }
-        //Test that if there are no cipies, GetAll returns empty
-        [Fact]
-        public void TestGetAll_NoCheckOuts_ReturnsEmptyList()
-        {
-            //Arrange, Act
-            CheckOut.DeleteAll();
-            List<CheckOut> allCheckOuts = CheckOut.GetAll();
-
-            //Assert
-            List<CheckOut> actualResult = allCheckOuts;
-            List<CheckOut> expectedResult = new List<CheckOut>{};
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        //test if equals override works
-        [Fact]
-        public void TestEqualOverride_TrueIfCheckOutIsSame()
-        {
-            //Arrange, Act
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut firstCheckOut = new CheckOut(dueDate, 1, 1);
-            CheckOut secondCheckOut = new CheckOut(dueDate, 1, 1);
-
-            //Assert
-            Assert.Equal(firstCheckOut, secondCheckOut);
-        }
-
-        //tests if instances are saved to db
-        [Fact]
-        public void Test_Save_SavesToDatabase()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut newCheckOut = new CheckOut(dueDate, 1, 1);
-
-            //Act
-            newCheckOut.Save();
-
-            //Assert
-            List<CheckOut> actualResult = CheckOut.GetAll();
-            List<CheckOut> expectedResult = new List<CheckOut>{newCheckOut};
-
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        //tests that each instance is assigned corresponding db id
-        [Fact]
-        public void TestSave_AssignIdtoObject()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
-
-            //Act
-            testCheckOut.Save();
-            CheckOut savedCheckOut = CheckOut.GetAll()[0];
-
-            //Assert
-            int actualResult = savedCheckOut.GetId();
-            int expectedResult = testCheckOut.GetId();
-
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        //Tests that GetAll method pulls all items from db
-        [Fact]
-        public void TestGetAll_CheckOuts_ReturnsListOfCheckOuts()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut firstCheckOut = new CheckOut(dueDate, 1, 1);
-            CheckOut secondCheckOut = new CheckOut(dueDate, 2, 2);
-
-            //Act
-            firstCheckOut.Save();
-            secondCheckOut.Save();
-
-            //Assert
-            List<CheckOut> actualResult = CheckOut.GetAll();
-            List<CheckOut> expectedResult = new List<CheckOut>{firstCheckOut, secondCheckOut};
-
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        //Tests db-fetching specific item
-        [Fact]
-        public void TestFind_FindsCheckOutInDatabase()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
-            testCheckOut.Save();
-
-            //Act
-            CheckOut foundCheckOut = CheckOut.Find(testCheckOut.GetId());
-
-            //Assert
-            Assert.Equal(testCheckOut, foundCheckOut);
-        }
-
-        [Fact]
-        public void Test_DeleteThisCheckOut_OneCheckOutDeletedFromDatabase()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut firstCheckOut = new CheckOut(dueDate, 1, 1);
-            CheckOut secondCheckOut = new CheckOut(dueDate, 2, 2);
-            firstCheckOut.Save();
-            secondCheckOut.Save();
-
-            //Act
-            firstCheckOut.DeleteCheckOut();
-            List<CheckOut> result = CheckOut.GetAll();
-            List<CheckOut> verify = new List<CheckOut>{secondCheckOut};
-
-            //Assert
-            Assert.Equal(verify, result);
-        }
-
-        [Fact]
-        public void Test_UpdateReturnDate_UpdatesReturnDateinDB()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
-            testCheckOut.Save();
-
-            DateTime newReturnDate = new DateTime(2017, 4, 7);
-
-            //Act
-            testCheckOut.UpdateReturnDate(newReturnDate);
-
-
-            //Assert
-            DateTime actualResult = testCheckOut.GetReturnDate();
-            DateTime expectedResult = newReturnDate;
-
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        //Tests db-fetching specific item
-        [Fact]
-        public void TestSearchDueDate_SearchSearchDueDateInDatabase()
-        {
-            //Arrange
-            DateTime dueDate = new DateTime(2017, 3, 15);
-            DateTime returnDate = new DateTime(2017, 3, 7);
-            CheckOut testCheckOut = new CheckOut(dueDate, 1, 1);
-            testCheckOut.Save();
-
-            //Act
-            List<CheckOut> allDue = CheckOut.SearchDueDate(dueDate);
-            List<CheckOut> testDue = new List<CheckOut> {testCheckOut};
-            //Assert
-            Assert.Equal(testDue, allDue);
-        }
-
-        //Delete everything between tests
-        public void Dispose()
-        {
-            CheckOut.DeleteAll();
-        }
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=library_test;Integrated Security=SSPI;";
     }
+    //Test that if there are no cipies, GetAll returns empty
+    [Fact]
+    public void TestGetAll_NoCheckouts_ReturnsEmptyList()
+    {
+      //Arrange, Act
+      Checkout.DeleteAll();
+      List<Checkout> allCheckouts = Checkout.GetAll();
+
+      //Assert
+      List<Checkout> actualResult = allCheckouts;
+      List<Checkout> expectedResult = new List<Checkout>{};
+      Assert.Equal(expectedResult, actualResult);
+    }
+
+    //test if equals override works
+    [Fact]
+    public void TestEqualOverride_TrueIfCheckoutIsSame()
+    {
+      //Arrange, Act
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout firstCheckout = new Checkout(dueDate, 1, 1);
+      Checkout secondCheckout = new Checkout(dueDate, 1, 1);
+
+      //Assert
+      Assert.Equal(firstCheckout, secondCheckout);
+    }
+
+    //tests if instances are saved to db
+    [Fact]
+    public void Test_Save_SavesToDatabase()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout newCheckout = new Checkout(dueDate, 1, 1);
+
+      //Act
+      newCheckout.Save();
+
+      //Assert
+      List<Checkout> actualResult = Checkout.GetAll();
+      List<Checkout> expectedResult = new List<Checkout>{newCheckout};
+
+      Assert.Equal(expectedResult, actualResult);
+    }
+
+    //tests that each instance is assigned corresponding db id
+    [Fact]
+    public void TestSave_AssignIdtoObject()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout testCheckout = new Checkout(dueDate, 1, 1);
+
+      //Act
+      testCheckout.Save();
+      Checkout savedCheckout = Checkout.GetAll()[0];
+
+      //Assert
+      int actualResult = savedCheckout.GetId();
+      int expectedResult = testCheckout.GetId();
+
+      Assert.Equal(expectedResult, actualResult);
+    }
+
+    //Tests that GetAll method pulls all items from db
+    [Fact]
+    public void TestGetAll_Checkouts_ReturnsListOfCheckouts()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout firstCheckout = new Checkout(dueDate, 1, 1);
+      Checkout secondCheckout = new Checkout(dueDate, 2, 2);
+
+      //Act
+      firstCheckout.Save();
+      secondCheckout.Save();
+
+      //Assert
+      List<Checkout> actualResult = Checkout.GetAll();
+      List<Checkout> expectedResult = new List<Checkout>{firstCheckout, secondCheckout};
+
+      Assert.Equal(expectedResult, actualResult);
+    }
+
+    //Tests db-fetching specific item
+    [Fact]
+    public void TestFind_FindsCheckoutInDatabase()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout testCheckout = new Checkout(dueDate, 1, 1);
+      testCheckout.Save();
+
+      //Act
+      Checkout foundCheckout = Checkout.Find(testCheckout.GetId());
+
+      //Assert
+      Assert.Equal(testCheckout, foundCheckout);
+    }
+
+    [Fact]
+    public void Test_DeleteThisCheckout_OneCheckoutDeletedFromDatabase()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout firstCheckout = new Checkout(dueDate, 1, 1);
+      Checkout secondCheckout = new Checkout(dueDate, 2, 2);
+      firstCheckout.Save();
+      secondCheckout.Save();
+
+      //Act
+      firstCheckout.DeleteCheckout();
+      List<Checkout> result = Checkout.GetAll();
+      List<Checkout> verify = new List<Checkout>{secondCheckout};
+
+      //Assert
+      Assert.Equal(verify, result);
+    }
+
+    [Fact]
+    public void Test_UpdateReturnDate_UpdatesReturnDateinDB()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout testCheckout = new Checkout(dueDate, 1, 1);
+      testCheckout.Save();
+
+      DateTime newReturnDate = new DateTime(2017, 4, 7);
+
+      //Act
+      testCheckout.UpdateReturnDate(newReturnDate);
+
+
+      //Assert
+      DateTime actualResult = testCheckout.GetReturnDate();
+      DateTime expectedResult = newReturnDate;
+
+      Assert.Equal(expectedResult, actualResult);
+    }
+
+    //Tests db-fetching specific item
+    [Fact]
+    public void TestSearchDueDate_SearchSearchDueDateInDatabase()
+    {
+      //Arrange
+      DateTime dueDate = new DateTime(2017, 3, 15);
+      DateTime returnDate = new DateTime(2017, 3, 7);
+      Checkout testCheckout = new Checkout(dueDate, 1, 1);
+      testCheckout.Save();
+
+      //Act
+      List<Checkout> allDue = Checkout.SearchDueDate(dueDate);
+      List<Checkout> testDue = new List<Checkout> {testCheckout};
+      //Assert
+      Assert.Equal(testDue, allDue);
+    }
+
+    //Delete everything between tests
+    public void Dispose()
+    {
+      Book.DeleteAll();
+      Author.DeleteAll();
+      Copy.DeleteAll();
+      Checkout.DeleteAll();
+    }
+
+  }
 }

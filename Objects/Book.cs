@@ -329,7 +329,7 @@ namespace LibraryApp.Objects
       }
     }
 
-    //Create new row in checkout table
+    //Create new row in Checkout table
     public void CheckoutBook(int patronId)
     {
       SqlConnection conn = DB.Connection();
@@ -348,9 +348,9 @@ namespace LibraryApp.Objects
 
       DateTime dueDate = DateTime.Today.AddDays(14);
 
-      CheckOut newCheckOut = new CheckOut(dueDate, patronId, copyId);
+      Checkout newCheckout = new Checkout(dueDate, patronId, copyId);
 
-      newCheckOut.Save();
+      newCheckout.Save();
 
       if(rdr != null)
       {
@@ -361,6 +361,8 @@ namespace LibraryApp.Objects
         conn.Close();
       }
     }
+
+    //Return number of copies not checked out
     public int AvailableCopies()
     {
       SqlConnection conn = DB.Connection();
@@ -380,6 +382,42 @@ namespace LibraryApp.Objects
       int totalCopies = this.GetCopies().Count;
 
       return totalCopies - count;
+    }
+
+    //Returns a book to the library and sets the return date in Checkout object
+    public void ReturnBook(int patronId)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      DateTime today = DateTime.Today;
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM checkouts WHERE patrons_id = @PatronId AND copies_id IN (SELECT id FROM copies WHERE books_id = @BookId);", conn);
+      cmd.Parameters.Add(new SqlParameter("@PatronId", patronId));
+      cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+      cmd.Parameters.Add(new SqlParameter("@ReturnDate", today));
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int myCheckoutId = 0;
+
+      while(rdr.Read())
+      {
+        myCheckoutId = rdr.GetInt32(0);
+        Checkout myCheckout = Checkout.Find(myCheckoutId);
+        Console.WriteLine("MYCHECKOUT: " + myCheckout.GetReturnDate());
+        myCheckout.UpdateReturnDate(today);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
   }
 }
