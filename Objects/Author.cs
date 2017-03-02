@@ -260,5 +260,42 @@ namespace LibraryApp.Objects
 
             return foundAuthor;
         }
+
+        //return authors linked to book
+        public List<Book> GetBooks()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT books.* FROM authors JOIN books_authors ON (authors.id = books_authors.authors_id) JOIN books ON (books_authors.books_id = books.id) WHERE authors.id = @AuthorId;", conn);
+            cmd.Parameters.Add(new SqlParameter("@AuthorId", this.GetId().ToString()));
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<Book> books = new List<Book>{};
+
+            while(rdr.Read())
+            {
+                int bookId = rdr.GetInt32(0);
+                string title = rdr.GetString(1);
+
+                Book newBook = new Book(title, bookId);
+                books.Add(newBook);
+            }
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+            return books;
+        }
+
+        public void AddBook(Book book)
+        {
+        }
     }
 }

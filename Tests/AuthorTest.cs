@@ -165,10 +165,45 @@ namespace LibraryApp.Objects
             Assert.Equal(testAuthor, foundAuthor);
         }
 
+        //Test that if there are no books, GetAll returns empty
+        [Fact]
+        public void TestGetBooks_NoBooks_ReturnsEmptyList()
+        {
+            //Arrange, Act
+            Author testAuthor = new Author("Leo", "Tolstoy");
+            List<Book> allBooks= testAuthor.GetBooks();
+
+            //Assert
+            List<Book> actualResult = allBooks;
+            List<Book> expectedResult = new List<Book>{};
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        //Tests if row is added to books_authors
+        [Fact]
+        public void AddBook_ForRowAddedToJoinTable_Row()
+        {
+            //Arrange
+            Book testBook = new Book("War and Peace");
+            testBook.Save();
+            Author testAuthor = new Author("Leo", "Tolstoy");
+            testAuthor.Save();
+
+            //Act
+            testAuthor.AddBook(testBook);
+
+            //Assert
+            List<Book> actualResult = testAuthor.GetBooks();
+            List<Book> expectedResult = new List<Book>{testBook};
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         //Delete everything between tests
         public void Dispose()
         {
             Author.DeleteAll();
+            Book.DeleteAll();
         }
     }
 }
