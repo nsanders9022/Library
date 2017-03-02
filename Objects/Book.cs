@@ -270,5 +270,56 @@ namespace LibraryApp.Objects
                 conn.Close();
             }
         }
+
+        //return copies of a book
+        public int GetCopies()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM copies WHERE books_id = @BookId;", conn);
+            cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId().ToString()));
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<Copy> copies = new List<Copy>{};
+
+            while(rdr.Read())
+            {
+                int copyId = rdr.GetInt32(0);
+                int booksId = rdr.GetInt32(1);
+                Copy newCopy = new Copy(booksId, copyId);
+                copies.Add(newCopy);
+            }
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+            return copies.Count;
+        }
+
+        public void AddCopy(int numberOfCopies)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT INTO copies (books_id) VALUES (@BookId);", conn);
+            cmd.Parameters.Add(new SqlParameter("@BookId", this.GetId()));
+
+            for(int i = 0; i < numberOfCopies; i++)
+            {
+                cmd.ExecuteNonQuery();
+            }
+
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
     }
 }

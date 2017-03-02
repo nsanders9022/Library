@@ -194,12 +194,46 @@ namespace LibraryApp.Objects
             Assert.Equal(expectedResult, actualResult);
         }
 
+        //Test that if there are no copies, GetAll returns empty
+        [Fact]
+        public void TestGetCopies_NoCopies_ReturnsEmptyList()
+        {
+            //Arrange, Act
+            Book testBook = new Book("War and Peace");
+            int allCopies= testBook.GetCopies();
+
+            //Assert
+            int actualResult = allCopies;
+            int expectedResult = 0;
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        //Add a copy of a book
+        [Fact]
+        public void AddCopy_ForRowAddedToJoinTable_Row()
+        {
+            //Arrange
+            Book testBook = new Book("War and Peace");
+            testBook.Save();
+            Copy testCopy = new Copy(testBook.GetId());
+
+            //Act
+            testBook.AddCopy(4);
+
+            //Assert
+            int actualResult = testBook.GetCopies();
+            int expectedResult = 4;
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
 
         //Delete everything between tests
         public void Dispose()
         {
             Book.DeleteAll();
             Author.DeleteAll();
+            Copy.DeleteAll();
         }
     }
 }
