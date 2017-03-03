@@ -7,21 +7,25 @@
 
 @* Key is checkout, value is patron *@
 <table class="table table-striped table-bordered">
-  <tr>
-    <th>Patron Name</th>
-    <th>Title</th>
-    <th>Due Date</th>
-  </tr>
-  @{
-    foreach(var entry in Model)
-    {
-      <tr>
-      <td>@entry.Value.GetLastName(), @entry.Value.GetFirstName()</td>
-      <td>@entry.Key.GetBookTitle()</td>
-      <td>@entry.Key.GetDueDate()</td>
-      </tr>
+  <thead>
+    <tr>
+      <th>Patron Name</th>
+      <th>Title</th>
+      <th>Due Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    @{
+      foreach(var entry in Model)
+      {
+        <tr>
+        <td>@entry.Value.GetLastName(), @entry.Value.GetFirstName()</td>
+        <td>@entry.Key.GetBookTitle()</td>
+        <td>@entry.Key.GetDueDate()</td>
+        </tr>
+      }
     }
-  }
+  </tbody>
 </table>
 
 <p><a href="/books">View all books</a></p>
