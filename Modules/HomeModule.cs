@@ -30,6 +30,11 @@ namespace LibraryApp
         return View["patrons.cshtml", allPatrons];
       };
 
+      Get["/authors"] = _ => {
+        List<Author> allAuthors = Author.GetAll();
+        return View["authors.cshtml", allAuthors];
+      };
+
 
 
     }
