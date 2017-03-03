@@ -15,25 +15,23 @@
   </div>
 </nav>
 
-<h2>@Model.GetTitle()</h2>
+<h2>@Model.GetFirstName() @Model.GetLastName()</h2>
 
 
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th>Author(s)</th>
-      <th>Copies</th>
+      <th>Book Title</th>
     </tr>
   </thead>
   <tbody>
     <tr>
           <td>
-            @foreach(var author in @Model.GetAuthors())
+            @foreach(var book in @Model.GetBooks())
             {
-              <p><a href="/author/@author.GetId()">@author.GetLastName(), @author.GetFirstName()</a></p>
+              <p><a href="/book/@book.GetId()">@book.GetTitle()</a></p>
             }
           </td>
-          <td>@Model.CountCopies()</td>
         </tr>
   </tbody>
 </table>

@@ -260,5 +260,38 @@ namespace LibraryApp.Objects
 
             return foundPatron;
         }
+
+        public List<Book> CheckedOutBooks()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT books.* FROM patrons JOIN checkouts ON (patrons.id = checkouts.patrons_id) JOIN copies ON (checkouts.copies_id = copies.id) JOIN books on (books.id = copies.books_id) WHERE patrons.id = @PatronsId;", conn);
+
+            cmd.Parameters.Add(new SqlParameter("@PatronsId", this.GetId().ToString()));
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<Book> books = new List<Book>{};
+
+            while(rdr.Read())
+            {
+                int bookId = rdr.GetInt32(0);
+                string title = rdr.GetString(1);
+
+                Book newBook = new Book(title, bookId);
+                books.Add(newBook);
+            }
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+            return books;
+        }
     }
 }

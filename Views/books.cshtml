@@ -35,7 +35,7 @@
           <td>
             @foreach(var author in @book.GetAuthors())
             {
-              <p>@author.GetLastName(), @author.GetFirstName()</p>
+              <p><a href="/author/@author.GetId()">@author.GetLastName(), @author.GetFirstName()</a></p>
             }
           </td>
           <td>@book.CountCopies()</td>
