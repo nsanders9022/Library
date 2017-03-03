@@ -61,6 +61,10 @@ namespace LibraryApp
                 return View["patrons.cshtml", allPatrons];
             };
 
+            Get["/book/{id}"] = parameters => {
+                Book newBook = Book.Find(parameters.id);
+                return View["book.cshtml", newBook];
+            };
 
 
         }

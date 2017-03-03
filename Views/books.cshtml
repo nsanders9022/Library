@@ -31,7 +31,7 @@
       foreach(var book in Model)
       {
         <tr>
-          <td>@book.GetTitle()</td>
+          <td><a href="/book/@book.GetId()">@book.GetTitle()</a></td>
           <td>
             @foreach(var author in @book.GetAuthors())
             {
