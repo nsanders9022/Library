@@ -52,7 +52,15 @@ namespace LibraryApp
 
                 return View["books.cshtml", allBooks];
             };
-            
+
+            Post["/add_patron"] =  _ => {
+                Patron newPatron = new Patron(Request.Form["patron-first"], Request.Form["patron-last"]);
+                newPatron.Save();
+
+                List<Patron> allPatrons = Patron.GetAll();
+                return View["patrons.cshtml", allPatrons];
+            };
+
 
 
         }
