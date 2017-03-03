@@ -1,8 +1,30 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
 <h1>All books</h1>
 
-@foreach (var book in @Model)
-{
-  <li>@book.GetTitle()</li>
-}
+<table class="table table-striped table-bordered">
+  <tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Copies</th>
+  </tr>
+  @{
+    foreach(var book in Model)
+    {
+      <tr>
+        <td>@book.GetTitle()</td>
+        <td>
+          @foreach(var author in @book.GetAuthors())
+          {
+            <li>@author.GetLastName(), @author.GetFirstName()</li>
+          }
+        </td>
+        <td>@book.CountCopies()</td>
+      </tr>
+    }
+  }
+</table>
 
 <p><a href="/">Go Home</a></p>
