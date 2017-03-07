@@ -29,7 +29,7 @@
       foreach(var patron in Model)
       {
         <tr>
-        <td><a href="/patron/{id}">@patron.GetLastName(), @patron.GetFirstName()</a></td>
+        <td><a href="/patron/@patron.GetId()">@patron.GetLastName(), @patron.GetFirstName()</a></td>
         </tr>
       }
     }
