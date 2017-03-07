@@ -3,41 +3,64 @@
 }
 
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/">Epicodus Library</a>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Epicodus Library</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/books">All Books</a></li>
+            <li><a href="/patrons">All Patrons</a></li>
+            <li><a href="/authors">All Authors</a></li>
+        </ul>
     </div>
-    <ul class="nav navbar-nav">
-      <li><a href="/books">All Books</a></li>
-      <li><a href="/patrons">All Patrons</a></li>
-      <li><a href="/authors">All Authors</a></li>
-    </ul>
-  </div>
 </nav>
 
-<h2>@Model.GetTitle()</h2>
+<h2>@Model["book"].GetTitle()</h2>
 
 
 <table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>Author(s)</th>
-      <th>Copies</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-          <td>
-            @foreach(var author in @Model.GetAuthors())
-            {
-              <p><a href="/author/@author.GetId()">@author.GetLastName(), @author.GetFirstName()</a></p>
-            }
-          </td>
-          <td>@Model.CountCopies()</td>
+    <thead>
+        <tr>
+            <th>Author(s)</th>
+            <th>Copies</th>
         </tr>
-  </tbody>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @foreach(var author in @Model["book"].GetAuthors())
+                {
+                    <p><a href="/author/@author.GetId()">@author.GetLastName(), @author.GetFirstName()</a></p>
+                }
+            </td>
+            <td>@Model["book"].CountCopies()</td>
+        </tr>
+    </tbody>
 </table>
 
-<form class="" action="/book/delete/@Model.GetId()" method="post">
+<form action='/book/delete/@Model["book"].GetId()' method="post">
     <button type="submit" name="button">Delete Book</button>
+</form>
+
+
+<h3>Add an author to this book:</h3>
+<form action='/book/add_author/@Model["book"].GetId()' method='post'>
+    <input id='book-id' name='book-id' type='hidden' value='@Model["book"].GetId()'>
+    <label for='author-id'>Select an author</label>
+    <select id='author-id' name='author-id' type='text'>
+        @foreach (var author in @Model["allAuthors"])
+        {
+            <option value='@author.GetId()'>@author.GetFirstName() @author.GetLastName()</option>
+        }
+    </select>
+    <button type='submit'>Add</button>
+</form>
+
+<h3>Update book title</h3>
+<form action='/book/update_title' method="post">
+    <input type="hidden" name="_method" value="PATCH">
+    <input name="book-id" type="hidden" value='@Model["book"].GetId()'>
+    <label for="new-title">New Title</label>
+    <input type="text" name="new-title">
+    <button type="submit" name="button">Update</button>
 </form>

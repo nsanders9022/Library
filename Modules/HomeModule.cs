@@ -63,7 +63,10 @@ namespace LibraryApp
 
             Get["/book/{id}"] = parameters => {
                 Book newBook = Book.Find(parameters.id);
-                return View["book.cshtml", newBook];
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                model.Add("book", newBook);
+                model.Add("allAuthors", Author.GetAll());
+                return View["book.cshtml", model];
             };
 
             Get["/author/{id}"] = parameters => {
@@ -91,9 +94,34 @@ namespace LibraryApp
 
             Post["book/search_title"] = _ => {
                 Book searchedBook = Book.SearchTitle(Request.Form["search-book-title"]);
-                return View["book.cshtml", searchedBook];
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                model.Add("book", searchedBook);
+                model.Add("allAuthors", Author.GetAll());
+                return View["book.cshtml", model];
             };
 
+            Post["book/add_author/{id}"] = parameters => {
+                Book searchedBook = Book.Find(parameters.id);
+                searchedBook.AddAuthor(Author.Find(Request.Form["author-id"]));
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                model.Add("book", searchedBook);
+                model.Add("allAuthors", Author.GetAll());
+                return View["book.cshtml", model];
+            };
+
+            Patch["/book/update_title"] = _ => {
+                Book newBook = Book.Find(Request.Form["book-id"]);
+                newBook.UpdateTitle(Request.Form["new-title"]);
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                model.Add("book", newBook);
+                model.Add("allAuthors", Author.GetAll());
+                return View["book.cshtml", model];
+            }
+
+
+
+
+            /book/update_title/
 
 
         }
