@@ -76,6 +76,19 @@ namespace LibraryApp
                 return View["patron.cshtml", newPatron];
             };
 
+            Post["/books/delete"] = _ => {
+                Book.DeleteAll();
+                List<Book> allBooks = Book.GetAll();
+                return View["books.cshtml", allBooks];
+            };
+
+            Post["/book/delete/{id}"] = parameters => {
+                Book newBook = Book.Find(parameters.id);
+                newBook.DeleteBook();
+                List<Book> allBooks = Book.GetAll();
+                return View["books.cshtml", allBooks];
+            };
+
 
 
         }
