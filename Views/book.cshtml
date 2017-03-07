@@ -64,3 +64,11 @@
     <input type="text" name="new-title">
     <button type="submit" name="button">Update</button>
 </form>
+
+<h3>Add more copies of this book</h3>
+<form action="/book/add_copy" method="post">
+    <input name="book-id" type="hidden" value='@Model["book"].GetId()'>
+    <label for="copy-amount">Number of copies: </label>
+    <input type="number" name="copy-amount">
+    <button type="submit" name="button">Add</button>
+</form>

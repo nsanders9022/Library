@@ -116,16 +116,16 @@ namespace LibraryApp
                 model.Add("book", newBook);
                 model.Add("allAuthors", Author.GetAll());
                 return View["book.cshtml", model];
+            };
+
+            Post["/book/add_copy"] = _ => {
+                Book newBook = Book.Find(Request.Form["book-id"]);
+                newBook.AddCopy(Request.Form["copy-amount"]);
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                model.Add("book", newBook);
+                model.Add("allAuthors", Author.GetAll());
+                return View["book.cshtml", model];
             }
-
-
-
-
-            /book/update_title/
-
-
         }
-
     }
-
 }
