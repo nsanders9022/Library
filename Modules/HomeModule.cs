@@ -89,6 +89,11 @@ namespace LibraryApp
                 return View["books.cshtml", allBooks];
             };
 
+            Post["book/search_title"] = _ => {
+                Book searchedBook = Book.SearchTitle(Request.Form["search-book-title"]);
+                return View["book.cshtml", searchedBook];
+            };
+
 
 
         }
