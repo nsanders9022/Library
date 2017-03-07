@@ -125,7 +125,7 @@ namespace LibraryApp
                 model.Add("book", newBook);
                 model.Add("allAuthors", Author.GetAll());
                 return View["book.cshtml", model];
-            }
+            };
         }
     }
 }
