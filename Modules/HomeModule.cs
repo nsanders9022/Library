@@ -14,7 +14,7 @@ namespace LibraryApp
                 List<Checkout> allCheckouts = Checkout.GetAll();
                 foreach (Checkout checkout in allCheckouts)
                 {
-                    Patron thisPatron = Patron.Find(checkout.GetId());
+                    Patron thisPatron = Patron.Find(checkout.GetPatronsId());
                     model.Add(checkout, thisPatron);
                 }
                 return View["index.cshtml", model];
@@ -38,25 +38,19 @@ namespace LibraryApp
             Post["/add_book"] =  _ => {
                 Book newBook = new Book(Request.Form["title"]);
                 newBook.Save();
-
                 Author newAuthor = new Author(Request.Form["author-first"], Request.Form["author-last"]);
                 newAuthor.Save();
                 newBook.AddAuthor(newAuthor);
-
                 Copy newCopy = new Copy(newBook.GetId());
                 newCopy.Save();
-
                 newBook.AddCopy(Request.Form["num-copies"]);
-
                 List<Book> allBooks = Book.GetAll();
-
                 return View["books.cshtml", allBooks];
             };
 
             Post["/add_patron"] =  _ => {
                 Patron newPatron = new Patron(Request.Form["patron-first"], Request.Form["patron-last"]);
                 newPatron.Save();
-
                 List<Patron> allPatrons = Patron.GetAll();
                 return View["patrons.cshtml", allPatrons];
             };
@@ -78,7 +72,21 @@ namespace LibraryApp
                 Dictionary<string, object> model = new Dictionary<string, object>();
                 Patron newPatron = Patron.Find(parameters.id);
                 model.Add("patron", newPatron);
+                model.Add("allBooks", Book.GetAll());
                 return View["patron.cshtml", model];
+            };
+
+            Post["/patron/delete/{id}"] = parameters => {
+                Patron newPatron = Patron.Find(parameters.id);
+                newPatron.DeletePatron();
+                List<Patron> allPatrons = Patron.GetAll();
+                return View["patrons.cshtml", allPatrons];
+            };
+
+            Post["/patrons/delete"] = _ => {
+                Patron.DeleteAll();
+                List<Patron> allPatrons = Patron.GetAll();
+                return View["patrons.cshtml", allPatrons];
             };
 
             Post["/books/delete"] = _ => {
@@ -106,13 +114,9 @@ namespace LibraryApp
                 Patron searchedPatron = Patron.SearchPatron(Request.Form["search-patron-name"]);
                 Dictionary<string, object> model = new Dictionary<string, object>();
                 model.Add("patron", searchedPatron);
-                // model.Add("allAuthors", Author.GetAll());
+                model.Add("allBooks", Book.GetAll());
                 return View["patron.cshtml", model];
             };
-
-
-
-
 
             Post["book/add_author/{id}"] = parameters => {
                 Book searchedBook = Book.Find(parameters.id);
@@ -139,6 +143,16 @@ namespace LibraryApp
                 model.Add("book", newBook);
                 model.Add("allAuthors", Author.GetAll());
                 return View["book.cshtml", model];
+            };
+
+            Post["/book/checkout/{id}"] = parameters => {
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                Patron foundPatron = Patron.Find(parameters.id);
+                Book checkedoutBook = Book.Find(Request.Form["book-id"]);
+                checkedoutBook.CheckoutBook(foundPatron.GetId());
+                model.Add("patron", foundPatron);
+                model.Add("allBooks", Book.GetAll());
+                return View["patron.cshtml", model];
             };
         }
     }
