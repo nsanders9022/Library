@@ -75,8 +75,10 @@ namespace LibraryApp
             };
 
             Get["/patron/{id}"] = parameters => {
+                Dictionary<string, object> model = new Dictionary<string, object>();
                 Patron newPatron = Patron.Find(parameters.id);
-                return View["patron.cshtml", newPatron];
+                model.Add("patron", newPatron);
+                return View["patron.cshtml", model];
             };
 
             Post["/books/delete"] = _ => {
@@ -92,13 +94,25 @@ namespace LibraryApp
                 return View["books.cshtml", allBooks];
             };
 
-            Post["book/search_title"] = _ => {
+            Post["/book/search_title"] = _ => {
                 Book searchedBook = Book.SearchTitle(Request.Form["search-book-title"]);
                 Dictionary<string, object> model = new Dictionary<string, object>();
                 model.Add("book", searchedBook);
                 model.Add("allAuthors", Author.GetAll());
                 return View["book.cshtml", model];
             };
+
+            Post["/patron/search_name"] = _ => {
+                Patron searchedPatron = Patron.SearchPatron(Request.Form["search-patron-name"]);
+                Dictionary<string, object> model = new Dictionary<string, object>();
+                model.Add("patron", searchedPatron);
+                // model.Add("allAuthors", Author.GetAll());
+                return View["patron.cshtml", model];
+            };
+
+
+
+
 
             Post["book/add_author/{id}"] = parameters => {
                 Book searchedBook = Book.Find(parameters.id);

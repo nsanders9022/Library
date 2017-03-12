@@ -47,13 +47,22 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form action="book/search_title" method="post">
-                <label for="search-book-title">Search by Book Title</label>
+            <form action="/book/search_title" method="post">
+                <label for="search-book-title">Search for books by title</label>
                 <input type="text" name="search-book-title">
                 <button type="submit" name="button">Search</button>
             </form>
         </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/patron/search_name" method="post">
+                <label for="search-patron-name">Search for patrons by last name</label>
+                <input type="text" name="search-patron-name">
+                <button type="submit" name="button">Search</button>
+            </form>
+        </div>
     </div>
 
 </div>

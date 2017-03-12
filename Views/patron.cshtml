@@ -15,7 +15,7 @@
     </div>
 </nav>
 
-<h2>@Model.GetFirstName() @Model.GetLastName()</h2>
+<h2>@Model["patron"].GetFirstName() @Model["patron"].GetLastName()</h2>
 
 
 <table class="table table-striped table-bordered">
@@ -28,7 +28,7 @@
     <tbody>
         <tr>
             <!-- <td>
-                @foreach(var book in @Model.CheckedOutBooks())
+                @foreach(var book in @Model["patron"].CheckedOutBooks())
                 {
                     <p><a href="/book/@book.GetId()">@book.GetTitle()</a></p>
                 }
