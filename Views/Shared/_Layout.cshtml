@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Library Catalog</title>
     <!-- <link href="..\..\Content\bootstrap.css" rel="stylesheet" type ="text/css"> -->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="../../Content/css/materialize.min.css"  media="screen,projection"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script type="text/javascript" src="../../Content/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../Content/js/materialize.min.js"></script>
 
-  </head>
-  <body>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper teal lighten-2">
+            <a class="brand-logo" href="/">Epicodus Library</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/books">All Books</a></li>
+                <li><a href="/patrons">All Patrons</a></li>
+                <li><a href="/authors">All Authors</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
-      @RenderBody()
+        @RenderBody()
     </div>
-  </body>
+</body>
 </html>
