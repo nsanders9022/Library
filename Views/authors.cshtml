@@ -28,3 +28,16 @@
     }
   </tbody>
 </table>
+
+<h3>Add a new author to the library</h3>
+<form action="/add_author" method="post">
+    <label for="author-first">Author first name: </label>
+    <input type="text" name="author-first" id="author-first">
+    <label for="author-last">Author last name: </label>
+    <input type="text" name="author-last" id="author-last">
+    <button type="submit" class="btn btn-success">Add</button>
+</form>
+
+<form action="/authors/delete" method="post">
+    <button type="submit" name="button">Delete all authors</button>
+</form>

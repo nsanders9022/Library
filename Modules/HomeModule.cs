@@ -154,6 +154,26 @@ namespace LibraryApp
                 model.Add("allBooks", Book.GetAll());
                 return View["patron.cshtml", model];
             };
+
+            Post["/add_author"] = _ => {
+                Author newAuthor = new Author(Request.Form["author-first"], Request.Form["author-last"]);
+                newAuthor.Save();
+                List<Author> allAuthors = Author.GetAll();
+                return View["authors.cshtml", allAuthors];
+            };
+
+            Post["/authors/delete"] = _ => {
+                Author.DeleteAll();
+                List<Author> allAuthors = Author.GetAll();
+                return View["authors.cshtml", allAuthors];
+            };
+
+            Post["/delete/author/{id}"] = parameters => {
+                Author foundAuthor = Author.Find(parameters.id);
+                foundAuthor.DeleteAuthor();
+                List<Author> allAuthors = Author.GetAll();
+                return View["authors.cshtml", allAuthors];
+            };
         }
     }
 }

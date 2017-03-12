@@ -222,6 +222,9 @@ namespace LibraryApp.Objects
             cmd.Parameters.Add(new SqlParameter("@PatronId", this.GetId()));
             cmd.ExecuteNonQuery();
 
+            SqlCommand cmd2 = new SqlCommand("DELETE FROM checkouts WHERE patrons_id = @PatronId;", conn);
+            cmd2.Parameters.Add(new SqlParameter("@PatronId", this.GetId()));
+            cmd2.ExecuteNonQuery();
             conn.Close();
         }
 
